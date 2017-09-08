@@ -12,11 +12,11 @@ const fs = require('fs'),
 const app = express();
 
 const activitySchema = new mongoose.Schema({
-  user: String,
+  user: {type:String, default: "anonymous"},
   date: {type: Date, default: Date.now},
   description: {type: String, default:"Read"},
   quantity: {type: Number, default:0},
-  unit: {type:String, default:"pages"}
+  unit: {type:String, default:"pages"},
 });
 
 mongoose.connect('mongodb://localhost/activitydb');
