@@ -12,14 +12,18 @@ const fs = require('fs'),
 const app = express();
 
 const activitySchema = new mongoose.Schema({
-  user: {type: String, lowercase:true, required:true},
-  date: {type: Date, default: Date.now, required:true},
-  description: {type: String, required:true, default:"Read"},
-  quantity: {type: Number, required: true, default:0},
-  unit: {type:String, required:true, default:"pages"}
+  user: String,
+  date: {type: Date, default: Date.now},
+  description: {type: String, default:"Read"},
+  quantity: {type: Number, default:0},
+  unit: {type:String, default:"pages"}
 });
 
 mongoose.connect('mongodb://localhost/activitydb');
+
+
+const Activity = mongoose.model('Activity',activitySchema);
+
 
 // Not certain I need what is in between these lines: -->
 app.use(bodyParser.urlencoded({
@@ -51,7 +55,22 @@ app.get('/api/activities/', function(req,res) {
 app.post('/api/activities/', function(req,res) {
 // Create a new activity for me to track.
   console.log("post activities");
-})
+
+  const newActivity = new Activity(req.body);
+    newActivity.save(function(err, activity) {
+      if (err){
+        res.send(err);
+      }
+      res.json(activity);
+    });
+});
+
+/*
+Snippet.create(req.body)
+  .then(function(snippet) {
+    res.redirect(`/snippets/user/${req.body.author}`);
+  })
+*/
 
 app.get('/api/activities/:id', function(req,res) {
 // Show information about one activity I am tracking, and give me the data I have recorded for that activity.
