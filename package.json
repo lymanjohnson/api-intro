@@ -1,0 +1,30 @@
+{
+  "name": "api-intro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lymanjohnson/api-intro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lymanjohnson/api-intro/issues"
+  },
+  "homepage": "https://github.com/lymanjohnson/api-intro#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "express-validator": "^4.1.1",
+    "mongoose": "^4.11.10",
+    "mustache": "^2.3.0",
+    "mustache-express": "^1.2.5",
+    "session": "^0.1.0"
+  }
+}

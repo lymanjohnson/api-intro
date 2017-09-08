@@ -1,14 +1,47 @@
+const fs = require('fs'),
+  path = require('path'),
+  express = require('express'),
+  mustacheExpress = require('mustache-express'),
+  session = require('express-session'),
+  bodyParser = require('body-parser'),
+  // flash = require('express-flash-messages'),
+  mongoose = require('mongoose'),
+  expressValidator = require('express-validator'),
+  bcrypt = require('bcryptjs');
 
-const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
+const app = express();
 
 const activitySchema = new mongoose.Schema({
   user: {type: String, lowercase:true, required:true},
-  date: {type: Date, default: Date.now, required;true},
+  date: {type: Date, default: Date.now, required:true},
   description: {type: String, required:true, default:"Read"},
   quantity: {type: Number, required: true, default:0},
   unit: {type:String, required:true, default:"pages"}
 });
+
+mongoose.connect('mongodb://localhost/activitydb');
+
+// Not certain I need what is in between these lines: -->
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(expressValidator());
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  store: new(require('express-sessions'))({
+    storage: 'mongodb',
+    instance: mongoose, // optional
+    host: 'localhost', // optional
+    port: 27017, // optional
+    db: 'test', // optional
+    collection: 'sessions', // optional
+    expire: 86400 // optional
+  })
+}));
+// <-- Not sure I need what is in between these lines //
 
 app.get('/activities/', function(req,res) {
 // Show a list of all activities I am tracking, and links to their individual pages
