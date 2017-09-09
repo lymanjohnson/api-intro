@@ -118,7 +118,7 @@ app.delete('/api/activities/:id', function(req,res) {
       if (err) {
         res.send(err)
       }
-      res.send("Deleted")
+      res.json(res)
     }
   )
 })
@@ -126,12 +126,23 @@ app.delete('/api/activities/:id', function(req,res) {
 
 app.post('/api/activities/:id/stats', function(req,res) {
 // Add tracked data for a day. The data sent with this should include the day tracked. You can also override the data for a day already recorded.
+  Activity.findOne({_id : req.params.id}).then(
+    function(err,activity) {
+      if (err) {
+        res.send(err)
+      }
 
+    }
+  )
 })
 
 app.delete('/api/stats/:id', function(req,res) {
 //	Remove tracked data for a day.
+  Activity.findOne({_id : req.params.id, entry.date : req.body.entry.date}) // isolate date, (no time)
+  .then(
 
+    //REMOVE activity.entry row w
+  )
 })
 
 app.listen(3000, function() {
