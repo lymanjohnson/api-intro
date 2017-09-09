@@ -50,7 +50,13 @@ app.use(session({
 app.get('/api/activities/', function(req,res) {
 // Show a list of all activities I am tracking, and links to their individual pages
   console.log("get activities");
-})
+  Activity.find().then(function(err, activity) {
+    if (err) {
+      res.send(err);
+    }
+    res.json(activity);
+  });
+});
 
 app.post('/api/activities/', function(req,res) {
 // Create a new activity for me to track.
