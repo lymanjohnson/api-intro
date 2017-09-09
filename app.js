@@ -47,6 +47,7 @@ app.use(session({
 }));
 // <-- Not sure I need what is in between these lines //
 
+//WORKS//
 app.get('/api/activities/', function(req,res) {
 // Show a list of all activities I am tracking, and links to their individual pages
   console.log("get activities");
@@ -58,6 +59,7 @@ app.get('/api/activities/', function(req,res) {
   });
 });
 
+//WORKS//
 app.post('/api/activities/', function(req,res) {
 // Create a new activity for me to track.
   console.log("post activities");
@@ -78,9 +80,16 @@ Snippet.create(req.body)
   })
 */
 
+
 app.get('/api/activities/:id', function(req,res) {
 // Show information about one activity I am tracking, and give me the data I have recorded for that activity.
   console.log("get activities id");
+  Activity.findOne({_id : req.params.id}).then(function(err,activity){
+    if (err) {
+      res.send(err)
+    }
+    res.json(activity)
+  })
 })
 
 app.put('/api/activities/:id', function(req,res) {
