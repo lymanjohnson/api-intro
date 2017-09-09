@@ -13,10 +13,12 @@ const app = express();
 
 const activitySchema = new mongoose.Schema({
   user: {type:String, default: "anonymous"},
-  date: {type: Date, default: Date.now},
   description: {type: String, default:"Read"},
-  quantity: {type: Number, default:0},
   unit: {type:String, default:"pages"},
+  entry: {
+    date: {type: Date, default: Date.now},
+    quantity: {type: Number, default:0}
+  }
 });
 
 mongoose.connect('mongodb://localhost/activitydb');
@@ -73,18 +75,11 @@ app.post('/api/activities/', function(req,res) {
     });
 });
 
-/*
-Snippet.create(req.body)
-  .then(function(snippet) {
-    res.redirect(`/snippets/user/${req.body.author}`);
-  })
-*/
-
-
+//WORKS
 app.get('/api/activities/:id', function(req,res) {
 // Show information about one activity I am tracking, and give me the data I have recorded for that activity.
   console.log("get activities id");
-  Activity.find({description : req.params.id}).then(function(err,activity){
+  Activity.find({_id : req.params.id}).then(function(err,activity){
     if (err) {
       res.send(err)
     }
@@ -92,19 +87,20 @@ app.get('/api/activities/:id', function(req,res) {
   })
 })
 
+
 app.put('/api/activities/:id', function(req,res) {
 // Update one activity I am tracking, changing attributes such as name or type. Does not allow for changing tracked data.
   console.log("put activities id");
-  Activity.findOne({_id : req.params.id}).ten(function(err,activity){
-    if (err) {
+  Activity.findOneAndUpdate(
+    {_id : req.params.id},
+    { description  : req.body.description,
+      unit         : req.body.unit }
+  )
+  .then(function(err,activity) {
+    if (err){
       res.send(err)
     }
-    if (req.body.description != null) {
-      activity.description = req.body.description;
-    }
-    if (req.body.description != null) {
-      activity.description = req.body.description;
-    }
+    res.json(activity)
   })
 })
 
