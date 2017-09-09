@@ -87,7 +87,7 @@ app.get('/api/activities/:id', function(req,res) {
   })
 })
 
-
+// WORKS , but displays old results?
 app.put('/api/activities/:id', function(req,res) {
 // Update one activity I am tracking, changing attributes such as name or type. Does not allow for changing tracked data.
   console.log("put activities id");
@@ -110,9 +110,17 @@ description
 quantity
 unit*/
 
-app.delete('activities/:id', function(req,res) {
+//WORKS, BUT THEN DOESN'T REDIRECT WELL...
+app.delete('/api/activities/:id', function(req,res) {
 // Delete one activity I am tracking. This should remove tracked data for that activity as well.
-  console.log("delete activities id");
+  Activity.deleteOne({_id : req.params.id}).then(
+    function(err,res){
+      if (err) {
+        res.send(err)
+      }
+      res.send("Deleted")
+    }
+  )
 })
 
 
