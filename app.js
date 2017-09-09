@@ -84,7 +84,7 @@ Snippet.create(req.body)
 app.get('/api/activities/:id', function(req,res) {
 // Show information about one activity I am tracking, and give me the data I have recorded for that activity.
   console.log("get activities id");
-  Activity.findOne({_id : req.params.id}).then(function(err,activity){
+  Activity.find({description : req.params.id}).then(function(err,activity){
     if (err) {
       res.send(err)
     }
@@ -95,7 +95,24 @@ app.get('/api/activities/:id', function(req,res) {
 app.put('/api/activities/:id', function(req,res) {
 // Update one activity I am tracking, changing attributes such as name or type. Does not allow for changing tracked data.
   console.log("put activities id");
+  Activity.findOne({_id : req.params.id}).ten(function(err,activity){
+    if (err) {
+      res.send(err)
+    }
+    if (req.body.description != null) {
+      activity.description = req.body.description;
+    }
+    if (req.body.description != null) {
+      activity.description = req.body.description;
+    }
+  })
 })
+
+/*user
+date
+description
+quantity
+unit*/
 
 app.delete('activities/:id', function(req,res) {
 // Delete one activity I am tracking. This should remove tracked data for that activity as well.
