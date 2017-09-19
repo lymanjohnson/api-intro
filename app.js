@@ -136,12 +136,19 @@ app.post('/api/activities/:id/stats', function(req,res) {
   )
 })
 
+
+// db.survey.update( { _id: 1 }, { $pullAll: { scores: [ 0, 5 ] } } )
+//{ $pullAll: { <field1>: [ <value1>, <value2> ... ], ... } }
+
 app.delete('/api/stats/:id', function(req,res) {
 //	Remove tracked data for a day.
-  Activity.findOne({_id : req.params.id, entry.date : req.body.entry.date}) // isolate date, (no time)
-  .then(
+  Activity.update( {_id : req.params.id} , {$pullAll: {"entry.date" : req.body.date}})
+  .then( function(err, activity)
+  {
+    if (err) {res.send(err)}
+    res.json(activity);
+  }
 
-    //REMOVE activity.entry row w
   )
 })
 
